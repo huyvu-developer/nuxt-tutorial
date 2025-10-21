@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script>
+        const giaithua = n =>(n === 0 || n === 1 ? 1: n * giaithua(n-1));
+        console.log(giaithua(6))
+    </script>
+</body>
+</html>

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>GitHub User Search</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+
+<body>
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1 class="mb-3">Tìm tài khoản GitHub</h1>
+            <div class="input-group w-50 mx-auto">
+                <input type="text" id="userName" class="form-control" placeholder="Nhập tên người dùng">
+                <button class="btn btn-primary" onclick="searchUser()">Tìm kiếm</button>
+            </div>
+        </div>
+        <div id="user-container" class="d-flex justify-content-center"></div>
+
+    </div>
+    <script>
+        async function searchUser() {
+            const userName = document.getElementById('userName').value.trim();
+            const userContainer = document.getElementById('user-container');
+
+            if (!userName) {
+                userContainer.innerHTML = `<div class="alert alert-warning w-50 text-center">Vui lòng nhập tên người dùng </div>`
+                return;
+            }
+            userContainer.innerHTML = `<div class="mt-4">Đang tìm kiếm...</div>`;
+            try {
+                const response = await fetch(`https://api.github.com/users/${userName}`);
+                if (!userName.ok) {
+                    userContainer.innerHTML = `<div class="alert alert-danger w-50 text-center">Người dùng không tìm thấy </div>`
+                }
+                const user = await response.json();
+                
+                userContainer.innerHTML = `<div class="card mt-2 p-2" style="width: 400px;">
+                    <img src="${user.avatar_url}" class="card-img-top rounded" wight="50px" alt="Avatar" />
+                    <div class="card-body text-center">
+                        <h5 class="card-title">${user.name || user.login}</h5>
+                        <p class="card-text">${user.bio || "Không có mô tả"}</p>
+                        <p> <a href="${user.html_url}" target="_blank">${user.login}</a></p>
+                        <p> Repos: ${user.public_repos} | Followers: ${user.followers}</p>
+                    </div>
+                </div>`
+            } catch (error) {
+                userContainer.innerHTML = `
+                <div class="alert alert-danger w-50 text-center">${error.message}</div>
+            `;
+            }
+        } 
+    </script>
+</body>
+
+</html>
