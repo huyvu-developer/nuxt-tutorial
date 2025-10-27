@@ -1,0 +1,1 @@
+<template><div class="container text-center">Hello</div></template>
